@@ -4,9 +4,9 @@ include:
   - template: Code-Quality.gitlab-ci.yml
 
 variables:
-  ANDROID_COMPILE_SDK: "29"
-  ANDROID_BUILD_TOOLS: "29.0.3"
-  ANDROID_SDK_TOOLS:   "4333796"
+  ANDROID_COMPILE_SDK: "31"
+  ANDROID_BUILD_TOOLS: "31.0.0"
+  ANDROID_SDK_TOOLS:   "8092744"
 
 before_script:
   - apt-get --quiet update --yes
