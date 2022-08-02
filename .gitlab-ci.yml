@@ -1,7 +1,7 @@
 image: openjdk:11-jdk
 
 include:
-  - template: Android.latest.gitlab-ci.yml
+  - template: Code-Quality.gitlab-ci.yml
 
 variables:
   ANDROID_COMPILE_SDK: "33"
@@ -26,7 +26,7 @@ before_script:
   - pushd $ANDROID_HOME
   - unzip -d cmdline-tools cmdline-tools.zip
   - pushd cmdline-tools
-  # since commandline tools version 8512546 the root folder is named "cmdline-tools" so we rename it if necessary
+  # since commandline tools version 7583922 the root folder is named "cmdline-tools" so we rename it if necessary
   - mv cmdline-tools tools || true
   - popd
   - popd
@@ -58,10 +58,10 @@ assembleDebug:
   stage: build
   script:
     - touch secrets1.properties #make temp file named secrets1.properties
-      - cat $BASE_URL >> secrets1.properties # copy git variable value to secrets1.properties file
-      - ./gradlew assembleDebug
-      - touch $CUSTOM_APK_FILE_NAME.apk
-      - cat app/build/outputs/apk/debug/app-debug.apk >> $CUSTOM_APK_FILE_NAME.apk
+    - cat $BASE_URL >> secrets1.properties # copy git variable value to secrets1.properties file
+    - ./gradlew assembleDebug
+    - touch $CUSTOM_APK_FILE_NAME.apk
+    - cat app/build/outputs/apk/debug/app-debug.apk >> $CUSTOM_APK_FILE_NAME.apk
   artifacts:
     paths:
       - app/build/outputs/apk/debug/
@@ -79,7 +79,7 @@ code_quality:
   artifacts:
     expose_as: 'Code Quality Report'
     paths: [dl-code-quality-report.json]
-      - app/build/outputs/
+
 
 # Run all tests, if any fails, interrupt the pipeline(fail it)
 debugTests:
