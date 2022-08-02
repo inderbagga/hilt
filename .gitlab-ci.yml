@@ -26,7 +26,7 @@ before_script:
   - pushd $ANDROID_HOME
   - unzip -d cmdline-tools cmdline-tools.zip
   - pushd cmdline-tools
-  # since commandline tools version 7583922 the root folder is named "cmdline-tools" so we rename it if necessary
+  # since commandline tools version 8512546 the root folder is named "cmdline-tools" so we rename it if necessary
   - mv cmdline-tools tools || true
   - popd
   - popd
@@ -57,9 +57,28 @@ assembleDebug:
   interruptible: true
   stage: build
   script:
-    - ./gradlew assembleDebug
+    - touch secrets1.properties #make temp file named secrets1.properties
+      - cat $BASE_URL >> secrets1.properties # copy git variable value to secrets1.properties file
+      - ./gradlew assembleDebug
+      - touch $CUSTOM_APK_FILE_NAME.apk
+      - cat app/build/outputs/apk/debug/app-debug.apk >> $CUSTOM_APK_FILE_NAME.apk
   artifacts:
     paths:
+      - app/build/outputs/apk/debug/
+      - $CUSTOM_APK_FILE_NAME.apk
+
+code_quality:
+  stage: build
+  before_script:
+    - |
+      if ! docker info &>/dev/null; then
+        if [ -z "$DOCKER_HOST" -a "$KUBERNETES_PORT" ]; then
+          export DOCKER_HOST='tcp://localhost:2375'
+        fi
+      fi
+  artifacts:
+    expose_as: 'Code Quality Report'
+    paths: [dl-code-quality-report.json]
       - app/build/outputs/
 
 # Run all tests, if any fails, interrupt the pipeline(fail it)
