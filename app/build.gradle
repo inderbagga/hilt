@@ -15,12 +15,12 @@ if (secretsPropertiesFile1.exists()) {
 }
 
     android {
-        compileSdkVersion 31
+        compileSdkVersion 33
 
         defaultConfig {
             applicationId "com.mindorks.framework.mvvm"
             minSdkVersion 16
-            targetSdkVersion 31
+            targetSdkVersion 33
             versionCode 1
             versionName "1.0"
 
@@ -36,14 +36,13 @@ if (secretsPropertiesFile1.exists()) {
             }
         }
         compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_8
-            targetCompatibility JavaVersion.VERSION_1_8
+            sourceCompatibility JavaVersion.VERSION_11
+            targetCompatibility JavaVersion.VERSION_11
         }
-        // work-runtime-ktx 2.1.0 and above now requires Java 8
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = '11'
         }
-        buildToolsVersion '31.0.0'
+        buildToolsVersion '33.0.0'
     }
 
     dependencies {
